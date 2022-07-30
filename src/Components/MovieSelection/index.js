@@ -5,7 +5,7 @@ import { Movie } from "./Movie";
 
 export function MovieSelection () {
     return(
-        <>
+        <div style={{marginBottom: "8rem"}}>
             <Title>
                 Selecione o filme
             </Title>
@@ -17,7 +17,7 @@ export function MovieSelection () {
                 <Movie />
                 <Movie />
             </Movies>
-        </>
+        </div>
     );
 }
 

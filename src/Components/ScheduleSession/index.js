@@ -5,7 +5,7 @@ import { DaySession } from './DaySession';
 
 export function ScheduleSession () {
     return(
-        <>
+        <div style={{marginBottom: "8rem"}}>
             <Title>
                 Selecione o horário
             </Title>
@@ -13,7 +13,7 @@ export function ScheduleSession () {
             <DaySession />
             <DaySession />
             
-        </>
+        </div>
     );
 }
 
