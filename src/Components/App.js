@@ -6,6 +6,8 @@ import GlobalStyle from "../assets/css/GloballStyle"
 import FontStyles from "../assets/css/FontStyles"
 
 import { MovieSelection } from './MovieSelection'
+import { ScheduleSession } from './ScheduleSession'
+import { ScheduleSeat } from './ScheduleSeat'
 import { Header } from './Header'
 import { Footer } from './Footer'
 
@@ -22,6 +24,8 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<MovieSelection />} />
+                    <Route path="/1" element={<ScheduleSession />} />
+                    <Route path="/2" element={<ScheduleSeat />} />
             
             
                 </Routes>

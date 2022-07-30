@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import enola from '../../assets/img/enola.png'
-import filme2067 from '../../assets/img/2067filme.png'
+import filme2067 from '../../assets/img/2067filme.png'        
 
 
 export function Movie () {
