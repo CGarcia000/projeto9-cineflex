@@ -1,4 +1,6 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { Seat } from "./Seat";
@@ -6,6 +8,16 @@ import { Seat } from "./Seat";
 export function ScheduleSeat () {
     const [nameSchedule, setNameSchedule] = useState("");
     const [cpf, setCpf] = useState("");
+
+    const {idSessao} = useParams();
+
+    useEffect(() => {
+        const sessionSchedulePromise = axios.get(`https://mock-api.driven.com.br/api/v7/cineflex/showtimes/${idSessao}/seats`);
+
+        sessionSchedulePromise.then(res => {
+            console.log(res);
+        }).catch(e => console.log(e));
+    })
     
     return(
         <div style={{marginBottom: "8rem"}}>

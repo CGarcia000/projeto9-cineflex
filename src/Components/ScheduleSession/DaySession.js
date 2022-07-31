@@ -1,17 +1,26 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 
-export function DaySession() {
+export function DaySession({
+    dayObj,
+}) {
     return (
         <>
             <Day>
-                {'Quinta-feira'} - {'24/06/2021'}
+                {dayObj.weekday} - {dayObj.date}
             </Day>
 
             <ButtonsSessionHour>
-                {/* Colocar link no button */}
-                <button>{'15:00'}</button>
-                <button>{'15:00'}</button>
+                {dayObj.showtimes.map(showtime => {
+                    return (
+                    <>
+                    <Link to={`/assentos/${showtime.id}`}>
+                        <button key={showtime.id}>{showtime.name}</button>
+                    </Link>
+                    </>
+                    );
+                })}
             </ButtonsSessionHour>
 
         </>

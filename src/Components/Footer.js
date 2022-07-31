@@ -1,10 +1,14 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 
 // props - img, nome
 
 export function Footer() {
+    const params = useParams();
+    console.log(params);
+
     return (
         <Wrapper>
             teste

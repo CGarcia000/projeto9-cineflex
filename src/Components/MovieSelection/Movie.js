@@ -1,16 +1,21 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import enola from '../../assets/img/enola.png'
 import filme2067 from '../../assets/img/2067filme.png'        
 
 
-export function Movie () {
+export function Movie ({
+    movieObj,
+}) {
+    console.log(movieObj);
     return(
         <>
-            <Wrapper>
-                <img src={enola} alt="descrição do filme" />
-                {/* <img src={filme2067} alt="descrição do filme" /> */}
-            </Wrapper>
+            <Link to={`/sessoes/${movieObj.id}`} >
+                <Wrapper>
+                    <img src={movieObj.posterURL} alt={movieObj.title} />
+                </Wrapper>
+            </Link>
         </>
     );
 }
@@ -25,6 +30,7 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 
     img {
         width: 9rem;
