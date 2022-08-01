@@ -1,14 +1,9 @@
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-
-import enola from '../../assets/img/enola.png'
-import filme2067 from '../../assets/img/2067filme.png'        
-
+import styled from "styled-components";   
 
 export function Movie ({
     movieObj,
 }) {
-    console.log(movieObj);
     return(
         <>
             <Link to={`/sessoes/${movieObj.id}`} >

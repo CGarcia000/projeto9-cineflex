@@ -4,83 +4,99 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { Seat } from "./Seat";
+import { Footer } from "../Footer";
 
-export function ScheduleSeat () {
+export function ScheduleSeat ({
+    setShouldRedirect,
+}) {
     const [nameSchedule, setNameSchedule] = useState("");
     const [cpf, setCpf] = useState("");
 
+    const [movie, setMovie] = useState({});
+    const [session, setSession] = useState({});
+    const [seats, setSeats] = useState([]);
+    const [selectedSeats, setSelectedSeats] = useState([]);
+
     const {idSessao} = useParams();
+
+    console.log(selectedSeats);
 
     useEffect(() => {
         const sessionSchedulePromise = axios.get(`https://mock-api.driven.com.br/api/v7/cineflex/showtimes/${idSessao}/seats`);
-
         sessionSchedulePromise.then(res => {
-            console.log(res);
+            setMovie({title: res.data.movie.title, posterURL: res.data.movie.posterURL});
+            setSession({time: res.data.name, weekday: res.data.day.weekday});
+            setSeats(res.data.seats);
         }).catch(e => console.log(e));
-    })
+    }, [])
+
+    function HandleSchedule(e) {
+        e.preventDefault();
+
+        if (selectedSeats.length === 0) return alert('Selecione pelo menos 1 assento');
+
+        // axios.post('https://mock-api.driven.com.br/api/v7/cineflex/seats/book-many', {
+        //     ids: selectedSeats,
+        //     name: nameSchedule,
+        //     cpf: cpf.replace(/\./g, '').replace(/-/g, ''),
+        // });
+
+        setShouldRedirect(current => !current); // usar o then (precisa de useState para os dados do final)
+        // catch => alert('Erro')
+    }
+
+    function cpfMask(e) {
+        return setCpf(e.target.value.replace(/\D/g, '')
+                .replace(/(\d{3})(\d)/, '$1.$2') 
+                .replace(/(\d{3})(\d)/, '$1.$2')
+                .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+                .replace(/(-\d{2})\d+?$/, '$1'));
+    }
     
     return(
-        <div style={{marginBottom: "8rem"}}>
-            <Title>
-                Selecione o(s) assento(s)
-            </Title>
+        <>
+            <div style={{marginBottom: "8rem"}}>
+                <Title>
+                    Selecione o(s) assnameScheduleento(s)
+                </Title>
 
-            <Seats>
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
-                <Seat />
+                <Seats>
+                    {seats.map(seat => <Seat key={seat.id} seatObj={seat} setSelectedSeats={setSelectedSeats}/>)}
+                </Seats>
+                <SeatLegend>
+                    <div>
+                        <div className="seat selected"></div>
+                        <span>Selecionado</span>
+                    </div>
+                    <div>
+                        <div className="seat"></div>
+                        <span>Disponível</span>
+                    </div>
+                    <div>
+                        <div className="seat na"></div>
+                        <span>Indisponível</span>
+                    </div>
+                </SeatLegend>
 
-            </Seats>
-            <SeatLegend>
-                <div>
-                    <div className="seat selected"></div>
-                    <span>Selecionado</span>
-                </div>
-                <div>
-                    <div className="seat"></div>
-                    <span>Disponível</span>
-                </div>
-                <div>
-                    <div className="seat na"></div>
-                    <span>Indisponível</span>
-                </div>
-            </SeatLegend>
+                <form onSubmit={HandleSchedule}>
+                    <FormDiv>
+                        <label forhtml="name-buyer">Nome do comprador:</label>
+                        <input type="text" placeholder="Digite seu nome..." 
+                            value={nameSchedule} onChange={e => setNameSchedule(e.target.value)} 
+                            id="name-buyer" maxLength={128} required/>
+                        <label forhtml="cpf-buyer">CPF do comprador:</label>
+                        <input type="text" placeholder="Digite seu CPF..." 
+                            value={cpf} onChange={cpfMask} 
+                            id="cpf-buyer" required/>
+                    </FormDiv>
+                    <FormDiv button={true}>
+                        <button type="submit">Reservar assentos(s)</button>
+                    </FormDiv>
+                </form>
+            </div>
 
-            <form onSubmit={1}>
-                <FormDiv>
-                    <label for="name-buyer">Nome do comprador:</label>
-                    <input type="text" placeholder="Digite seu nome..." value={nameSchedule} onChange={e => (e.target.value)} id="name-buyer" />
-                    <label for="cpf-buyer">CPF do comprador:</label>
-                    <input type="password" placeholder="Digite seu CPF..." value={cpf} onChange={e => (e.target.value)} id="cpf-buyer" />
-                </FormDiv>
-                <FormDiv button={true}>
-                    <button type="submit">Reservar assentos(s)</button>
-                </FormDiv>
-            </form>
-        </div>
+            <Footer movie={movie} session={session} />
+        </>
     );
 }
 

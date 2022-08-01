@@ -1,4 +1,3 @@
-import { useLayoutEffect } from "react/cjs/react.production.min";
 import styled from "styled-components";
 
 export function RequestMade() {

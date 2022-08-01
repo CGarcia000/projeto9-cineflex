@@ -1,17 +1,23 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-
-// props - img, nome
-
-export function Footer() {
-    const params = useParams();
-    console.log(params);
-
+export function Footer({
+    movie,
+    session
+}) {
     return (
         <Wrapper>
-            teste
+            <MovieWrapper>
+                <img src={movie.posterURL} alt={movie.title}/>
+            </MovieWrapper>
+            <div>
+                <h3>{movie.title}</h3>
+                {session ? (
+                    <h4>{`${session.weekday} - ${session.time}`}</h4>
+                ) : (
+                    <></>
+                )}
+            </div>
         </Wrapper>
     );
 }
@@ -28,4 +34,36 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: left;
     padding: 1rem;
+
+    > div:nth-child(2) {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        padding-left: 1rem;
+        height: 4rem;
+        justify-content: space-evenly;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+        font-weight: 400;
+    }
+
+    h4 {
+        font-size: 1.4rem;
+        font-weight: 400;
+    }
+`
+
+const MovieWrapper = styled.div`
+    padding: 0.5rem;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 4rem;
+        height: auto;
+    }
 `

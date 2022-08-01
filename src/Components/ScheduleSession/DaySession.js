@@ -14,11 +14,9 @@ export function DaySession({
             <ButtonsSessionHour>
                 {dayObj.showtimes.map(showtime => {
                     return (
-                    <>
-                    <Link to={`/assentos/${showtime.id}`}>
-                        <button key={showtime.id}>{showtime.name}</button>
+                    <Link key={showtime.id} to={`/assentos/${showtime.id}`}>
+                        <button>{showtime.name}</button>
                     </Link>
-                    </>
                     );
                 })}
             </ButtonsSessionHour>

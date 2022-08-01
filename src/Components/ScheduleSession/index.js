@@ -7,22 +7,20 @@ import { Footer } from "../Footer";
 import { DaySession } from './DaySession';
 
 
-export function ScheduleSession ({
-    movie
-}) {
+export function ScheduleSession () {
     const [days, setDays] = useState([]);
+    const [movie, setMovie] = useState({});
 
     const {idFilme} = useParams();
 
     useEffect(()=> {
         const sessionsPromise = axios.get(`https://mock-api.driven.com.br/api/v7/cineflex/movies/${idFilme}/showtimes`);
 
-        // sessionsPromise.then(res => {
-        //     setDays(res.data.days);
-        // }).catch(e => console.log(e));
+        sessionsPromise.then(res => {
+            setDays(res.data.days);
+            setMovie({title: res.data.title, posterURL: res.data.posterURL});
+        }).catch(e => console.log(e));
     }, []);
-
-    console.log(days);
 
     return(
         <>
@@ -34,7 +32,7 @@ export function ScheduleSession ({
             {days.map(day => <DaySession key={day.id} dayObj={day}/> )}
             
         </div>
-        <Footer />
+        <Footer movie={movie}/>
         </>
     );
 }
