@@ -6,7 +6,10 @@ import styled from "styled-components";
 import { Movie } from "./Movie";
 
 
-export function MovieSelection () {
+export function MovieSelection ({
+    setScheduleObj,
+    setShouldRedirect,
+}) {
     const [movies, setMovies] = useState([]);
     
     
@@ -16,6 +19,9 @@ export function MovieSelection () {
         moviesPromise.then(res => {
             setMovies(res.data);
         }).catch(e => console.log(e)); 
+
+        setScheduleObj(current => {});
+        setShouldRedirect(current => false);
     }, []);
 
     return(

@@ -23,7 +23,7 @@ export default function App() {
 
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<MovieSelection />} />
+                    <Route path="/" element={<MovieSelection setScheduleObj={setScheduleObj} setShouldRedirect={setShouldRedirect}/>} />
                     <Route path="/sessoes/:idFilme" element={<ScheduleSession />} />
                     <Route 
                         path="/assentos/:idSessao" 
