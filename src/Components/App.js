@@ -12,6 +12,7 @@ import { Header } from './Header'
 
 
 export default function App() {
+    const [scheduleObj, setScheduleObj] = useState({});
     const [shouldRedirect, setShouldRedirect] = useState(false);
 
     return (
@@ -26,9 +27,9 @@ export default function App() {
                     <Route path="/sessoes/:idFilme" element={<ScheduleSession />} />
                     <Route 
                         path="/assentos/:idSessao" 
-                        element={shouldRedirect ? (<Navigate replace to='/success' />) : (<ScheduleSeat setShouldRedirect={setShouldRedirect}/>)} 
+                        element={shouldRedirect ? (<Navigate replace to='/success' />) : (<ScheduleSeat setShouldRedirect={setShouldRedirect} setScheduleObj={setScheduleObj}/>)} 
                     />
-                    <Route path="/success" element={<RequestMade />} />
+                    <Route path="/success" element={<RequestMade scheduleObj={scheduleObj}/>} />
             
             
                 </Routes>

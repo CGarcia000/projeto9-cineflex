@@ -8,6 +8,7 @@ import { Footer } from "../Footer";
 
 export function ScheduleSeat ({
     setShouldRedirect,
+    setScheduleObj,
 }) {
     const [nameSchedule, setNameSchedule] = useState("");
     const [cpf, setCpf] = useState("");
@@ -19,14 +20,21 @@ export function ScheduleSeat ({
 
     const {idSessao} = useParams();
 
-    console.log(selectedSeats);
-
     useEffect(() => {
         const sessionSchedulePromise = axios.get(`https://mock-api.driven.com.br/api/v7/cineflex/showtimes/${idSessao}/seats`);
         sessionSchedulePromise.then(res => {
             setMovie({title: res.data.movie.title, posterURL: res.data.movie.posterURL});
             setSession({time: res.data.name, weekday: res.data.day.weekday});
             setSeats(res.data.seats);
+            setScheduleObj({
+                movie: {
+                    name: res.data.movie.title,
+                },
+                session: {
+                    date: res.data.day.date,
+                    time: res.data.name,
+                }
+            })
         }).catch(e => console.log(e));
     }, [])
 
@@ -35,14 +43,36 @@ export function ScheduleSeat ({
 
         if (selectedSeats.length === 0) return alert('Selecione pelo menos 1 assento');
 
-        // axios.post('https://mock-api.driven.com.br/api/v7/cineflex/seats/book-many', {
-        //     ids: selectedSeats,
-        //     name: nameSchedule,
-        //     cpf: cpf.replace(/\./g, '').replace(/-/g, ''),
-        // });
+        const schedulePromise = axios.post('https://mock-api.driven.com.br/api/v7/cineflex/seats/book-many', {
+            ids: selectedSeats,
+            name: nameSchedule,
+            cpf: cpf.replace(/\./g, '').replace(/-/g, ''),
+        });
 
-        setShouldRedirect(current => !current); // usar o then (precisa de useState para os dados do final)
-        // catch => alert('Erro')
+        const arrSeatsNumbers = findSeatsNames(selectedSeats);
+
+        schedulePromise.then(res => {
+            setScheduleObj(current => ({
+                ...current, 
+                seats: arrSeatsNumbers,
+                buyer: {
+                    name: nameSchedule,
+                    cpf,
+                },
+            }));
+            setShouldRedirect(current => !current);
+        }).catch(e => {
+            console.log(e);
+            alert('Um erro inesperado ocorreu');
+        })
+    }
+
+    function findSeatsNames(arrSeats) {
+        const arrSeatsNames = [];
+        for (let i=0; i < arrSeats.length; i++) {
+            arrSeatsNames.push(seats.find((obj) => obj.id === arrSeats[i]).name)
+        }
+        return arrSeatsNames;
     }
 
     function cpfMask(e) {
@@ -57,7 +87,7 @@ export function ScheduleSeat ({
         <>
             <div style={{marginBottom: "8rem"}}>
                 <Title>
-                    Selecione o(s) assnameScheduleento(s)
+                    Selecione o(s) assento(s)
                 </Title>
 
                 <Seats>

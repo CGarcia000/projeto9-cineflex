@@ -1,6 +1,9 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-export function RequestMade() {
+export function RequestMade({
+    scheduleObj
+}) {
     return(
         <>
             <Title pageTitle={true}>Pedido feito com sucesso!</Title>
@@ -8,28 +11,31 @@ export function RequestMade() {
             <BlockDetail>
                 <Title>Filme e sessão</Title>
                 <div>
-                    teste
+                    <div>{scheduleObj.movie.name}</div>
+                    <div>{scheduleObj.session.date} {scheduleObj.session.time}</div>
                 </div>
             </BlockDetail>
 
             <BlockDetail>
                 <Title>Ingresso(s)</Title>
                 <div>
-
+                    {scheduleObj.seats.map(numSeat => <div key={numSeat}>Assento {numSeat}</div>)}
                 </div>
             </BlockDetail>
 
             <BlockDetail>
                 <Title>Comprador</Title>
                 <div>
-                    <div>Nome: </div>
-                    <div>CPF: </div>
+                    <div>Nome: {scheduleObj.buyer.name}</div>
+                    <div>CPF: {scheduleObj.buyer.cpf}</div>
                 </div>
             </BlockDetail>
 
             
             <ButtonHome>
-                <button>Voltar pra Home</button>
+                <Link to='/'>
+                    <button>Voltar pra Home</button>
+                </Link>
             </ButtonHome>
         
         </>
@@ -47,7 +53,7 @@ const Title = styled.div`
 const BlockDetail = styled.div`
     padding: 0 3rem;
     margin-top: 3rem;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
 
     > div:nth-child(2) {
         margin-top: 1rem;

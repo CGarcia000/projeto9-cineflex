@@ -20,7 +20,6 @@ export function DaySession({
                     );
                 })}
             </ButtonsSessionHour>
-
         </>
     );
 }
